@@ -18,14 +18,14 @@ import ydhl.eb.ez.service.SongService;
 
 
 @RestController
-@RequestMapping("/songs")
+@RequestMapping
 public class SongController {
 	private static final Logger logger = LoggerFactory.getLogger(SongController.class);
 	
 	@Autowired
 	private SongService service;
 	
-	@GetMapping
+	@GetMapping("/songs")
 	public Result<List<Song>> getLikeSongs() {
 		logger.info("正在查找喜欢歌曲信息...");
 		Result<List<Song>> result = new Result<List<Song>>();
@@ -35,29 +35,36 @@ public class SongController {
 		return result;
 	}
 	
-	@GetMapping("/history")
+	@GetMapping("/songs/history")
 	public Result<List<Song>> getListenLot(){
 		logger.info("正在查找听得多的歌曲信息..."); 
 		Result result = null;
 		return result;
 	}
 	
-	@GetMapping("/random")
+	@GetMapping("/songs/random")
 	public Result<List<Song>> getRandom(){
 		logger.info("随机推荐歌曲...");
 		Result result = null;
 		return result;
 	}
 	
-	@GetMapping("/name/{title}")
+	@GetMapping("/search/name/{title}")
 	public Result<List<Song>> searchSongByTitle(@PathVariable String title) {
 		logger.info("正在查找指定歌曲名的歌曲信息...");
 		return service.searchSongByTitle(title);
 	}
 
-	@GetMapping("/singer/{quality}")
+	@GetMapping("/search/singer/{quality}")
 	public Result<List<Song>> searchSongBySinger(@PathVariable String singer) {
 		logger.info("正在查找指定歌手的歌曲信息...");
 		return service.searchSongBySinger(singer);
+	}
+	
+	@GetMapping("/search/hot")
+	public Result<List<Song>> searchHot(@PathVariable String search) {
+		logger.info("正在查找热门搜索的歌曲信息...");
+		Result result = null;
+		return result;
 	}
 }
