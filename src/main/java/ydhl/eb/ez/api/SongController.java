@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ydhl.eb.ez.model.Frequency;
 import ydhl.eb.ez.model.Song;
 import ydhl.eb.ez.service.Result;
 import ydhl.eb.ez.service.SongService;
@@ -26,27 +27,31 @@ public class SongController {
 	private SongService service;
 	
 	@GetMapping("/songs")
-	public Result<List<Song>> getLikeSongs() {
-		logger.info("正在查找喜欢歌曲信息...");
-		Result<List<Song>> result = new Result<List<Song>>();
-		List<Song> songs = service.getLikeSongs();
+	public Result<List<Frequency>> getLikeSongs() {
+		logger.info("正在查找喜欢的歌曲信息..."); 
+		Result<List<Frequency>> result = new Result<List<Frequency>>();
+		List<Frequency> songs = service.getLikeSongs();
 		result = result.ok();
 		result.setData(songs);
 		return result;
 	}
 	
 	@GetMapping("/songs/history")
-	public Result<List<Song>> getListenLot(){
-		logger.info("正在查找听得多的歌曲信息..."); 
-		Result result = null;
+	public Result<List<Frequency>> getListenLot(){
+		logger.info("正在查找听过歌曲信息...");
+		Result<List<Frequency>> result = new Result<List<Frequency>>();
+		List<Frequency> songs = service.getHistorySongs();
+		result = result.ok();
+		result.setData(songs);
 		return result;
+		
 	}
 	
 	@GetMapping("/songs/random")
-	public Result<List<Song>> getRandom(){
+	public List<Song> getRandom(){
 		logger.info("随机推荐歌曲...");
-		Result result = null;
-		return result;
+		List<Song> songs = service.getRandomSongs(service.getAllSongs(),service.getAllSongs().size());
+		return songs;
 	}
 	
 	@GetMapping("/search/name/{title}")
@@ -62,9 +67,12 @@ public class SongController {
 	}
 	
 	@GetMapping("/search/hot")
-	public Result<List<Song>> searchHot(@PathVariable String search) {
+	public Result<List<Frequency>> searchHot() {
 		logger.info("正在查找热门搜索的歌曲信息...");
-		Result result = null;
+		Result<List<Frequency>> result = new Result<List<Frequency>>();
+		List<Frequency> songs = service.getSearchMoreSongs();
+		result = result.ok();
+		result.setData(songs);
 		return result;
 	}
 }

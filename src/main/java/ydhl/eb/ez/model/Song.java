@@ -1,5 +1,7 @@
 package ydhl.eb.ez.model;
 
+import java.util.List;
+
 public class Song {
 	
 	private String id;
@@ -8,15 +10,8 @@ public class Song {
 	private String lyric; //歌词
 	private String singer; //歌手
 	private String cover; // 写真播放界面图片
-	private String frequency; //播放次数
-	private String search; //搜索次数
+	private List<Frequency> frequencys; 
 	
-	public String getSearch() {
-		return search;
-	}
-	public void setSearch(String search) {
-		this.search = search;
-	}
 	public String getId() {
 		return id;
 	}
@@ -53,21 +48,20 @@ public class Song {
 	public void setCover(String cover) {
 		this.cover = cover;
 	}
-	public String getFrequency() {
-		return frequency;
+	public List<Frequency> getFrequencys() {
+		return frequencys;
 	}
-	public void setFrequency(String frequency) {
-		this.frequency = frequency;
+	public void setFrequencys(List<Frequency> frequencys) {
+		this.frequencys = frequencys;
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((cover == null) ? 0 : cover.hashCode());
-		result = prime * result + ((frequency == null) ? 0 : frequency.hashCode());
+		result = prime * result + ((frequencys == null) ? 0 : frequencys.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lyric == null) ? 0 : lyric.hashCode());
-		result = prime * result + ((search == null) ? 0 : search.hashCode());
 		result = prime * result + ((singer == null) ? 0 : singer.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
@@ -87,10 +81,10 @@ public class Song {
 				return false;
 		} else if (!cover.equals(other.cover))
 			return false;
-		if (frequency == null) {
-			if (other.frequency != null)
+		if (frequencys == null) {
+			if (other.frequencys != null)
 				return false;
-		} else if (!frequency.equals(other.frequency))
+		} else if (!frequencys.equals(other.frequencys))
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -101,11 +95,6 @@ public class Song {
 			if (other.lyric != null)
 				return false;
 		} else if (!lyric.equals(other.lyric))
-			return false;
-		if (search == null) {
-			if (other.search != null)
-				return false;
-		} else if (!search.equals(other.search))
 			return false;
 		if (singer == null) {
 			if (other.singer != null)
@@ -127,9 +116,7 @@ public class Song {
 	@Override
 	public String toString() {
 		return "Song [id=" + id + ", title=" + title + ", url=" + url + ", lyric=" + lyric + ", singer=" + singer
-				+ ", cover=" + cover + ", frequency=" + frequency + ", search=" + search + "]";
+				+ ", cover=" + cover + ", frequencys=" + frequencys + "]";
 	}
 	
-	
-		
 }
