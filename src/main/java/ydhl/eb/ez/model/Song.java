@@ -54,6 +54,7 @@ public class Song {
 	public void setFrequencys(List<Frequency> frequencys) {
 		this.frequencys = frequencys;
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

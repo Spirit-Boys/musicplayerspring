@@ -8,11 +8,13 @@ import java.util.Random;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import ydhl.eb.ez.dao.SongRepository;
 import ydhl.eb.ez.model.Frequency;
 import ydhl.eb.ez.model.Song;
 
+@Service
 public class SongService {
 	public static final Logger logger = LoggerFactory.getLogger(SongService.class);
 	
@@ -24,12 +26,11 @@ public class SongService {
 		return repo.findAll();
 	}
 
-	public List<Frequency> getHistorySongs() {
-		List<Frequency> result = null;
+	public List<Song> getHistorySongs() {
+		List<Song> result = null;
 		List<Song> saved = getAllSongs();
-		result =  ((Song) saved).getFrequencys();
-		if(((Frequency) result).getPlay() != 0) {
-		((Song) saved).getFrequencys().sort(new Comparator<Frequency>() {
+		for(int i = 0; i < saved.size(); i++) {
+			saved.get(i).getFrequencys().sort(new Comparator<Frequency>() {
 				@Override
 				public int compare(Frequency o1, Frequency o2) {
 					int re = 0;
@@ -40,8 +41,9 @@ public class SongService {
 					}
 					return re;
 				}
-			});}
-		return result;
+			});
+		}
+			return result;
 	}
 	
 	public Result<List<Song>> searchSongByTitle(String title) {
@@ -52,11 +54,11 @@ public class SongService {
 		return repo.findBySinger(singer);
 	}
 
-	public List<Frequency> getLikeSongs() {
-		List<Frequency> result = null;
+	public List<Song> getLikeSongs() {
+		List<Song> result = null;
 		List<Song> saved = getAllSongs();
-			result = ((Song) saved).getFrequencys();
-			((Song) saved).getFrequencys().sort(new Comparator<Frequency>() {
+		for(int i = 0; i < saved.size(); i++) {
+			saved.get(i).getFrequencys().sort(new Comparator<Frequency>() {
 				@Override
 				public int compare(Frequency o1, Frequency o2) {
 					int re = 0;
@@ -71,14 +73,15 @@ public class SongService {
 			if (result.size() > 10) {
 				result = result.subList(0, 10);
 			}
+		}
 		return result;
 	}
 
-	public List<Frequency> getSearchMoreSongs() {
-		List<Frequency> result = null;
+	public List<Song> getSearchMoreSongs() {
+		List<Song> result = null;
 		List<Song> saved = getAllSongs();
-			result = ((Song) saved).getFrequencys();
-			((Song) saved).getFrequencys().sort(new Comparator<Frequency>() {
+		for(int i = 0; i < saved.size(); i++) {
+			saved.get(i).getFrequencys().sort(new Comparator<Frequency>() {
 				@Override
 				public int compare(Frequency o1, Frequency o2) {
 					int re = 0;
@@ -93,6 +96,7 @@ public class SongService {
 			if (result.size() > 10) {
 				result = result.subList(0, 10);
 			}
+		}
 		return result;
 	}
 
@@ -113,6 +117,29 @@ public class SongService {
 			list.remove(target);
 		}
 		return backList;
+	}
+
+	public List<Song> getPreSongs() {
+		List<Song> result = null;
+		List<Song> saved = getAllSongs();
+		for(int i = 0; i < saved.size(); i++) {
+			saved.get(i).getFrequencys().sort(new Comparator<Frequency>() {
+				@Override
+				public int compare(Frequency o1, Frequency o2) {
+					int re = 0;
+					if (o1.getPlay() < o2.getPlay()) {
+						re = 1;
+					} else if (o1.getPlay() > o2.getPlay()) {
+						re = -1;
+					}
+					return re;
+				}
+			});
+			if (result.size() > 1) {
+				result = result.subList(0, 1);
+			}
+		}
+		return result;
 	}
 }
 

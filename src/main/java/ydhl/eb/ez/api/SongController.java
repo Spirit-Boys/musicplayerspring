@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ydhl.eb.ez.model.Frequency;
 import ydhl.eb.ez.model.Song;
 import ydhl.eb.ez.service.Result;
 import ydhl.eb.ez.service.SongService;
@@ -27,24 +26,31 @@ public class SongController {
 	private SongService service;
 	
 	@GetMapping("/songs")
-	public Result<List<Frequency>> getLikeSongs() {
+	public Result<List<Song>> getLikeSongs() {
 		logger.info("正在查找喜欢的歌曲信息..."); 
-		Result<List<Frequency>> result = new Result<List<Frequency>>();
-		List<Frequency> songs = service.getLikeSongs();
+		Result<List<Song>> result = new Result<List<Song>>();
+		List<Song> songs = service.getLikeSongs();
 		result = result.ok();
 		result.setData(songs);
 		return result;
 	}
 	
+	@GetMapping("/songs/preference")
+	public Result<List<Song>> getPreSongs() {
+		logger.info("正在推荐偏好的歌曲信息...");
+		List<Song> songs = service.getPreSongs();
+		String singer = songs.get(0).getSinger();	
+		return service.searchSongBySinger(singer);
+	}
+	
 	@GetMapping("/songs/history")
-	public Result<List<Frequency>> getListenLot(){
+	public Result<List<Song>> getListenLot(){
 		logger.info("正在查找听过歌曲信息...");
-		Result<List<Frequency>> result = new Result<List<Frequency>>();
-		List<Frequency> songs = service.getHistorySongs();
+		Result<List<Song>> result = new Result<List<Song>>();
+		List<Song> songs = service.getHistorySongs();
 		result = result.ok();
 		result.setData(songs);
 		return result;
-		
 	}
 	
 	@GetMapping("/songs/random")
@@ -67,10 +73,10 @@ public class SongController {
 	}
 	
 	@GetMapping("/search/hot")
-	public Result<List<Frequency>> searchHot() {
+	public Result<List<Song>> searchHot() {
 		logger.info("正在查找热门搜索的歌曲信息...");
-		Result<List<Frequency>> result = new Result<List<Frequency>>();
-		List<Frequency> songs = service.getSearchMoreSongs();
+		Result<List<Song>> result = new Result<List<Song>>();
+		List<Song> songs = service.getSearchMoreSongs();
 		result = result.ok();
 		result.setData(songs);
 		return result;

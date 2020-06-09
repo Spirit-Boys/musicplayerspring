@@ -25,6 +25,8 @@ public class Frequency implements Serializable{
 	public void setSearch(int search) {
 		this.search = search;
 	}
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
