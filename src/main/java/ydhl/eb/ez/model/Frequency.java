@@ -1,10 +1,7 @@
 package ydhl.eb.ez.model;
 
-import java.io.Serializable;
+public class Frequency{
 
-public class Frequency implements Serializable{
-
-	private static final long serialVersionUID = 1L;
 	/**
 	 * ²¥·Å´ÎÊý
 	 */

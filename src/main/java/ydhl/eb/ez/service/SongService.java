@@ -141,6 +141,10 @@ public class SongService {
 		}
 		return result;
 	}
+
+	public Song createSong(Song c) {
+		return repo.save(c);
+	}
 }
 
 
