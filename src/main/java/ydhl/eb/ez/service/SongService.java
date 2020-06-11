@@ -3,6 +3,7 @@ package ydhl.eb.ez.service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 import org.slf4j.Logger;
@@ -11,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ydhl.eb.ez.dao.SongRepository;
-import ydhl.eb.ez.model.Frequency;
 import ydhl.eb.ez.model.Song;
 
 @Service
@@ -27,23 +27,20 @@ public class SongService {
 	}
 
 	public List<Song> getHistorySongs() {
-		List<Song> result = null;
-		List<Song> saved = getAllSongs();
-		for(int i = 0; i < saved.size(); i++) {
-			saved.get(i).getFrequencys().sort(new Comparator<Frequency>() {
-				@Override
-				public int compare(Frequency o1, Frequency o2) {
-					int re = 0;
-					if (o1.getPlay() < o2.getPlay()) {
-						re = 1;
-					} else if (o1.getPlay() > o2.getPlay()) {
-						re = -1;
-					}
-					return re;
+		List<Song> result = getAllSongs();
+		result.sort(new Comparator<Song>() {
+			@Override
+			public int compare(Song o1, Song o2) {
+				int re = 0;
+				if (o1.getPlay() < o2.getPlay()) {
+					re = 1;
+				} else if (o1.getPlay() > o2.getPlay()) {
+					re = -1;
 				}
-			});
-		}
-			return result;
+				return re;
+			}
+		});
+	return result;
 	}
 	
 	public Result<List<Song>> searchSongByTitle(String title) {
@@ -55,12 +52,10 @@ public class SongService {
 	}
 
 	public List<Song> getLikeSongs() {
-		List<Song> result = null;
-		List<Song> saved = getAllSongs();
-		for(int i = 0; i < saved.size(); i++) {
-			saved.get(i).getFrequencys().sort(new Comparator<Frequency>() {
+		List<Song> result = getAllSongs();
+			result.sort(new Comparator<Song>() {
 				@Override
-				public int compare(Frequency o1, Frequency o2) {
+				public int compare(Song o1, Song o2) {
 					int re = 0;
 					if (o1.getPlay() < o2.getPlay()) {
 						re = 1;
@@ -73,31 +68,27 @@ public class SongService {
 			if (result.size() > 10) {
 				result = result.subList(0, 10);
 			}
-		}
 		return result;
 	}
 
 	public List<Song> getSearchMoreSongs() {
-		List<Song> result = null;
-		List<Song> saved = getAllSongs();
-		for(int i = 0; i < saved.size(); i++) {
-			saved.get(i).getFrequencys().sort(new Comparator<Frequency>() {
-				@Override
-				public int compare(Frequency o1, Frequency o2) {
-					int re = 0;
-					if (o1.getSearch() < o2.getSearch()) {
-						re = 1;
-					} else if (o1.getSearch() > o2.getSearch()) {
-						re = -1;
-					}
-					return re;
+		List<Song> result = getAllSongs();
+		result.sort(new Comparator<Song>() {
+			@Override
+			public int compare(Song o1, Song o2) {
+				int re = 0;
+				if (o1.getSearch() < o2.getSearch()) {
+					re = 1;
+				} else if (o1.getSearch() > o2.getSearch()) {
+					re = -1;
 				}
-			});
-			if (result.size() > 10) {
-				result = result.subList(0, 10);
+				return re;
 			}
+		});
+		if (result.size() > 10) {
+			result = result.subList(0, 10);
 		}
-		return result;
+	return result;
 	}
 
 	public List<Song> getRandomSongs(List<Song> list,int count){
@@ -120,30 +111,47 @@ public class SongService {
 	}
 
 	public List<Song> getPreSongs() {
-		List<Song> result = null;
-		List<Song> saved = getAllSongs();
-		for(int i = 0; i < saved.size(); i++) {
-			saved.get(i).getFrequencys().sort(new Comparator<Frequency>() {
-				@Override
-				public int compare(Frequency o1, Frequency o2) {
-					int re = 0;
-					if (o1.getPlay() < o2.getPlay()) {
-						re = 1;
-					} else if (o1.getPlay() > o2.getPlay()) {
-						re = -1;
-					}
-					return re;
+		List<Song> result = getAllSongs();
+		result.sort(new Comparator<Song>() {
+			@Override
+			public int compare(Song o1, Song o2) {
+				int re = 0;
+				if (o1.getPlay() < o2.getPlay()) {
+					re = 1;
+				} else if (o1.getPlay() > o2.getPlay()) {
+					re = -1;
 				}
-			});
-			if (result.size() > 1) {
-				result = result.subList(0, 1);
+				return re;
 			}
+		});
+		if (result.size() > 1) {
+			result = result.subList(0, 1);
 		}
-		return result;
+	return result;
 	}
 
 	public Song createSong(Song c) {
 		return repo.save(c);
+	}
+
+	public boolean deleteSong(String songId) {
+		boolean result = true;
+		repo.deleteById(songId);
+		return result;
+	}
+
+	public Song updateSong(Song c) {
+		Song saved = getSong(c.getId());
+		return repo.save(saved); // 保存更新后的实体对象
+	}
+
+	private Song getSong(String songId) {
+		Optional<Song> result = repo.findById(songId);
+		if (result.isPresent()) {
+			return result.get();
+		} else {
+			return null;
+		}
 	}
 }
 

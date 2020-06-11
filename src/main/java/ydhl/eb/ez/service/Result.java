@@ -36,14 +36,14 @@ public class Result<T> {
     public Result<T> ok() {
     	Result<T> result = new Result<>();
     	result.setStatus(OK);
-    	result.setMessage("操作成功");
+    	result.setMessage("Operation Successful!");
     	return result;
     }
     
     public Result<T> error() {
     	Result<T> result = new Result<>();
     	result.setStatus(ERROR);
-    	result.setMessage("操作失败");
+    	result.setMessage("Operation Failed!");
     	return result;
     }
 }

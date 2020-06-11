@@ -2,13 +2,7 @@ package ydhl.eb.ez.model;
 
 public class Frequency{
 
-	/**
-	 * 播放次数
-	 */
 	private int play = 0;
-	/**
-	 * 搜索次数
-	 */
 	private int search = 0;
 	public int getPlay() {
 		return play;

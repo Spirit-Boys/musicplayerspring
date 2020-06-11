@@ -1,7 +1,5 @@
 package ydhl.eb.ez.model;
 
-import java.util.List;
-
 public class Song {
 	
 	private String id;
@@ -10,8 +8,21 @@ public class Song {
 	private String lyric; //歌词
 	private String singer; //歌手
 	private String cover; // 写真播放界面图片
-	private List<Frequency> frequencys; 
+	private int play = 0;
+	private int search = 0;
 	
+	public int getPlay() {
+		return play;
+	}
+	public void setPlay(int play) {
+		this.play = play;
+	}
+	public int getSearch() {
+		return search;
+	}
+	public void setSearch(int search) {
+		this.search = search;
+	}
 	public String getId() {
 		return id;
 	}
@@ -48,21 +59,16 @@ public class Song {
 	public void setCover(String cover) {
 		this.cover = cover;
 	}
-	public List<Frequency> getFrequencys() {
-		return frequencys;
-	}
-	public void setFrequencys(List<Frequency> frequencys) {
-		this.frequencys = frequencys;
-	}
 	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((cover == null) ? 0 : cover.hashCode());
-		result = prime * result + ((frequencys == null) ? 0 : frequencys.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lyric == null) ? 0 : lyric.hashCode());
+		result = prime * result + play;
+		result = prime * result + search;
 		result = prime * result + ((singer == null) ? 0 : singer.hashCode());
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		result = prime * result + ((url == null) ? 0 : url.hashCode());
@@ -82,11 +88,6 @@ public class Song {
 				return false;
 		} else if (!cover.equals(other.cover))
 			return false;
-		if (frequencys == null) {
-			if (other.frequencys != null)
-				return false;
-		} else if (!frequencys.equals(other.frequencys))
-			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -96,6 +97,10 @@ public class Song {
 			if (other.lyric != null)
 				return false;
 		} else if (!lyric.equals(other.lyric))
+			return false;
+		if (play != other.play)
+			return false;
+		if (search != other.search)
 			return false;
 		if (singer == null) {
 			if (other.singer != null)
@@ -117,7 +122,7 @@ public class Song {
 	@Override
 	public String toString() {
 		return "Song [id=" + id + ", title=" + title + ", url=" + url + ", lyric=" + lyric + ", singer=" + singer
-				+ ", cover=" + cover + ", frequencys=" + frequencys + "]";
+				+ ", cover=" + cover + ", play=" + play + ", search=" + search + "]";
 	}
 	
 }
