@@ -5,11 +5,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,30 +37,6 @@ public class SongController {
 		return result;
 	}
 	
-	@DeleteMapping("/{id}")
-	public Result<Song> deleteSong(@PathVariable String id) {
-		logger.info("即将删除:id=" + id);
-		Result<Song> result = new Result<Song>();
-		boolean del = service.deleteSong(id);
-		if (del) {
-			result = result.ok();
-		} else {
-			result.setStatus(Result.ERROR); 
-			result.setMessage("删除失败"); 
-		}
-		return result;
-	}
-	
-	@PutMapping
-	public Result<Song> updateSong(@RequestBody Song c) {
-		logger.info("即将更新数据" + c);
-		Result<Song> result = new Result<Song>();
-		Song updated = service.updateSong(c);
-		result = result.ok();
-		result.setData(updated);
-		return result;
-	}
-	
 	@GetMapping
 	public Result<List<Song>> getLikeSongs() {
 		logger.info("正在查找喜欢的歌曲信息..."); 
@@ -74,7 +48,7 @@ public class SongController {
 	}
 	
 	@GetMapping("/preference")
-	public Result<List<Song>> getPreSongs() {
+	public List<Song> getPreSongs() {
 		logger.info("正在推荐偏好的歌曲信息...");
 		List<Song> songs = service.getPreSongs();
 		String singer = songs.get(0).getSinger();	
@@ -83,7 +57,7 @@ public class SongController {
 	
 	@GetMapping("/history")
 	public Result<List<Song>> getListenLot(){
-		logger.info("正在查找听过歌曲信息...");
+		logger.info("正在查找歌曲信息...");
 		Result<List<Song>> result = new Result<List<Song>>();
 		List<Song> songs = service.getHistorySongs();
 		result = result.ok();
@@ -99,13 +73,13 @@ public class SongController {
 	}
 	
 	@GetMapping("/search/title/{title}")
-	public Result<List<Song>> searchSongByTitle(@PathVariable String title) {
+	public List<Song> searchSongByTitle(@PathVariable String title) {
 		logger.info("正在查找指定歌曲名的歌曲信息...");
 		return service.searchSongByTitle(title);
 	}
 
 	@GetMapping("/search/singer/{singer}")
-	public Result<List<Song>> searchSongBySinger(@PathVariable String singer) {
+	public List<Song> searchSongBySinger(@PathVariable String singer) {
 		logger.info("正在查找指定歌手的歌曲信息...");
 		return service.searchSongBySinger(singer);
 	}

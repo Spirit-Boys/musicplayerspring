@@ -3,7 +3,6 @@ package ydhl.eb.ez.service;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 import org.slf4j.Logger;
@@ -28,26 +27,19 @@ public class SongService {
 
 	public List<Song> getHistorySongs() {
 		List<Song> result = getAllSongs();
-		result.sort(new Comparator<Song>() {
-			@Override
-			public int compare(Song o1, Song o2) {
-				int re = 0;
-				if (o1.getPlay() < o2.getPlay()) {
-					re = 1;
-				} else if (o1.getPlay() > o2.getPlay()) {
-					re = -1;
-				}
-				return re;
-			}
-		});
-	return result;
+//		for(int i=0; i < result.size(); i++) {
+//			if(result.get(i).getPlay()==0) {
+//				result.get(i) == null;
+//			}
+//		}
+		return result;
 	}
-	
-	public Result<List<Song>> searchSongByTitle(String title) {
+
+	public List<Song> searchSongByTitle(String title) {
 		return repo.findByTitle(title);
 	}
 
-	public Result<List<Song>> searchSongBySinger(String singer) {
+	public List<Song> searchSongBySinger(String singer) {
 		return repo.findBySinger(singer);
 	}
 
@@ -95,14 +87,7 @@ public class SongService {
 		List<Song> backList = null;
 		backList = new ArrayList<Song>();
 		Random random = new Random();
-		int backSum = 0;
-		if (list.size() >= count) {
-			backSum = count;
-		}else {
-			backSum = list.size();
-		}
-		for (int i = 0; i < backSum; i++) {
-//			随机数的范围为0-list.size()-1
+		for (int i = 0; i < 10; i++) {
 			int target = random.nextInt(list.size());
 			backList.add(list.get(target));
 			list.remove(target);
@@ -132,26 +117,6 @@ public class SongService {
 
 	public Song createSong(Song c) {
 		return repo.save(c);
-	}
-
-	public boolean deleteSong(String songId) {
-		boolean result = true;
-		repo.deleteById(songId);
-		return result;
-	}
-
-	public Song updateSong(Song c) {
-		Song saved = getSong(c.getId());
-		return repo.save(saved); // 保存更新后的实体对象
-	}
-
-	private Song getSong(String songId) {
-		Optional<Song> result = repo.findById(songId);
-		if (result.isPresent()) {
-			return result.get();
-		} else {
-			return null;
-		}
 	}
 }
 
